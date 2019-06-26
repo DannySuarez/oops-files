@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const animals = [
   'horse',
   'dog',
@@ -11,4 +13,16 @@ const getAnimal = () => {
   return animals[index];
 };
 
-module.exports = { getAnimal };
+const createFiles = (directory, count, callback) => {
+  let writtenSoFar = 0;
+  for(let i = 0; i < count; i++) {
+    fs.writeFile(`${directory}/${i}.txt`, getAnimal(), err => {
+      if(err) return callback(err);
+      writtenSoFar += 1;
+
+      if(writtenSoFar === count) callback();
+    });
+  }
+};
+
+module.exports = { getAnimal, createFiles };
